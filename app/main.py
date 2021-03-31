@@ -11,7 +11,7 @@ from bokeh.models import ColumnDataSource
 from bokeh.io import output_file
 from bokeh.plotting import gridplot,figure, show
 from bokeh.io import curdoc
-from bokeh.layouts import column, row
+from bokeh.layouts import column, row,layout,Spacer
 from bokeh.models import Slider,ColumnDataSource,Div,Label
 
 
@@ -112,7 +112,12 @@ hgvH2_source.data['url']=['app/static/delivery-van-hydrogen.png']
 
 # contour plot
 contour_source = get_contour_data(X,Y,Z,levels)
-plot = figure(plot_width=1000,plot_height=600,x_range=[0,1], y_range=[0,700],x_axis_label='energy intensity [kWh/pkm or kWh/tkm]',y_axis_label='demand [Gpkm or Gtkm]')
+plot = figure(plot_width=729,plot_height=450,x_range=[-0.04,1], y_range=[-20,700],
+              x_axis_label='energy intensity [kWh/pkm or kWh/tkm]',y_axis_label='demand [Gpkm or Gtkm]')
+plot.yaxis.axis_label_text_font_style = "normal"
+plot.xaxis.axis_label_text_font_style = "normal"
+
+
 plot.multi_line(xs='xs', ys='ys', line_color='line_color', source=contour_source)
 plot.text(x='xt',y='yt',text='text',source=contour_source,text_baseline='middle',text_align='center',angle=-0.5,text_font_size='10px')
 #plot.circle(intensities['car electric'], demands['car electric'], line_color="yellow", size=12)
@@ -143,8 +148,9 @@ heights = [150]
 bar_source = ColumnDataSource(data=dict(names=names, heights=heights))
 
 
-barchart = figure(x_range=(0,1), y_range=(0,200), plot_width=200,plot_height=600,
+barchart = figure(x_range=(0,1), y_range=(0,200), plot_width=200,plot_height=450,
            toolbar_location=None, tools="",y_axis_label='electricity demand [TWh]')
+barchart.yaxis.axis_label_text_font_style = "normal"
 
 barchart.vbar(x='names', top='heights', width=0.9, source=bar_source)
 barchart.line([0,1],[90,90],color='chartreuse',line_width=3,line_dash='dashed')
@@ -157,6 +163,7 @@ barchart.add_layout(label)
 
 
 barchart.xgrid.grid_line_color = None
+
 #barchart.legend.orientation = "horizontal"
 #barchart.legend.location = "top_center"
 
@@ -232,10 +239,11 @@ reg_break = Slider(title="regenerative breaking [% expl.]", value=0, start=0, en
 drag_fric = Slider(title="reduced drag & friction [% expl.]", value=0, start=0, end=100, step=5,width=200)
 
 inputs = row(column(div1,walk_demand,bike_demand,ecar_demand,h2car_demand),
-             column(div1_1,bus_demand,etrain_demand,h2train_demand,syn_air_demand),
-             column(div2,etrain_freight_demand,eHGV_demand,h2HGV_demand),
-             column(div3,car_util,train_util,bus_util,HGV_util,train_freight_util),
-             column(div4,car_weight,reg_break,drag_fric))
+              column(div1_1,bus_demand,etrain_demand,h2train_demand,syn_air_demand),
+              column(div2,etrain_freight_demand,eHGV_demand,h2HGV_demand),
+              column(div3,car_util,train_util,bus_util,HGV_util,train_freight_util),
+              column(div4,car_weight,reg_break,drag_fric))
+
 
 def update_data():
 
@@ -331,12 +339,14 @@ def update_data():
 
     #source.data = dict(x=x, y=y)
 
-for w in [ecar_demand,h2car_demand,bus_demand,bus_util,syn_air_demand,etrain_demand,walk_demand,bike_demand,car_util,train_util,h2HGV_demand,eHGV_demand,HGV_util,etrain_freight_demand,train_freight_util,car_weight,reg_break,drag_fric]:
+for w in [ecar_demand,h2car_demand,bus_demand,bus_util,syn_air_demand,etrain_demand,walk_demand,bike_demand,h2train_demand,car_util,train_util,h2HGV_demand,eHGV_demand,HGV_util,etrain_freight_demand,train_freight_util,car_weight,reg_break,drag_fric]:
     w.on_change('value', lambda attr, old, new: update_data())
 
 update_data()
 
-curdoc().add_root(column(row(plot,barchart),inputs))
+#curdoc().add_root(column(row(plot,barchart),inputs) )
+curdoc().add_root(layout(children=[[plot,Spacer(width=50),barchart],[inputs]],sizing_mode='fixed'))
+#curdoc().add_root(gridplot([[plot, barchart], [inputs1, inputs2]], sizing_mode='scale_both'))
 
 
 #show(row(plot,barchart),sizing_mode='scale_width')
