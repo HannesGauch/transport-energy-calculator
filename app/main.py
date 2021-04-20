@@ -57,8 +57,8 @@ y = np.arange(0, 1000, 1)
 X, Y = np.meshgrid(x, y)
 Z = X*Y
 
-intensities = {'car electric':0.15,'car hydrogen':0.36,'bus electric':0.14,'rail electric':0.08,'rail hydrogen':0.192,'air synthetic':0.9,'air hydrogen':1.4,'bicycle':0.0,'walk':0.0,'HGV electric':0.361,'HGV hydrogen':0.889,'rail freight electric':0.09}
-demands = {'car electric':673,'car hydrogen':0,'bus electric':29,'rail electric':81,'rail hydrogen':0,'walk':12,'bicycle':6,'air synthetic':0,'HGV electric':161,'HGV hydrogen':0,'rail freight electric':17}
+intensities = {'car electric':0.15,'car hydrogen':0.36,'van electric':0.267,'bus electric':0.14,'rail electric':0.08,'rail hydrogen':0.192,'air synthetic':0.9,'air hydrogen':1.4,'bicycle':0.0,'walk':0.0,'HGV electric':0.361,'HGV hydrogen':0.889,'rail freight electric':0.09}
+demands = {'car electric':539,'car hydrogen':0,'van electric':134,'bus electric':29,'rail electric':81,'rail hydrogen':0,'walk':12,'bicycle':6,'air synthetic':0,'HGV electric':161,'HGV hydrogen':0,'rail freight electric':17}
 # N = 400
 # x = np.linspace(-1, 1, N)
 # y = np.linspace(-1, 1, N)
@@ -110,6 +110,10 @@ hgvH2_dict = {'intensity':[intensities['HGV hydrogen']],'demand':[demands['HGV h
 hgvH2_source = ColumnDataSource(data=hgvH2_dict)
 hgvH2_source.data['url']=['app/static/delivery-van-hydrogen.png']
 
+van_dict = {'intensity':[intensities['van electric']],'demand':[demands['van electric']]}
+van_source = ColumnDataSource(data=van_dict)
+van_source.data['url']=['app/static/van_electric.png']
+
 # contour plot
 contour_source = get_contour_data(X,Y,Z,levels)
 plot = figure(plot_width=729,plot_height=450,x_range=[-0.04,1], y_range=[-20,700],
@@ -125,18 +129,19 @@ plot.text(x='xt',y='yt',text='text',source=contour_source,text_baseline='middle'
 #plot.circle(intensities['walk'], demands['walk'], line_color="yellow", size=12)
 #plot.circle(intensities['bicycle'], demands['bicycle'], line_color="yellow", size=12)
 #plot.circle(intensities['air synthetic'], demands['air synthetic'], line_color="yellow", size=12)
-plot.image_url(url='url',x='intensity',y='demand',h=30,w=0.07,anchor='center',source=car_source)
-plot.image_url(url='url',x='intensity',y='demand',h=30,w=0.07,anchor='center',source=carH2_source)
+plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=car_source)
+plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=carH2_source)
 
 plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=bike_source)
 plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=walk_source)
 plot.image_url(url='url',x='intensity',y='demand',h=50,w=0.07,anchor='center',source=plane_source)
-plot.image_url(url='url',x='intensity',y='demand',h=70,w=0.05,anchor='center',source=train_source)
+plot.image_url(url='url',x='intensity',y='demand',h=80,w=0.05,anchor='center',source=train_source)
 plot.image_url(url='url',x='intensity',y='demand',h=70,w=0.05,anchor='center',source=trainH2_source)
 plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=hgvE_source)
 plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=hgvH2_source)
 plot.image_url(url='url',x='intensity',y='demand',h=50,w=0.06,anchor='center',source=train_freight_source)
 plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=bus_source)
+plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=van_source)
 
 # bar chart
 #fruits = ['Apples', 'Pears', 'Nectarines', 'Plums', 'Grapes', 'Strawberries']
@@ -211,6 +216,7 @@ walk_demand = Slider(title="walk", value=demands['walk'], start=0.0, end=1000.0,
 bike_demand = Slider(title="bicycle", value=demands['bicycle'], start=0.0, end=1000.0, step=1,width=200)
 ecar_demand = Slider(title="car (electric)", value=demands['car electric'], start=0.0, end=1000.0, step=1,width=200)
 h2car_demand = Slider(title="car (hydrogen)", value=demands['car hydrogen'], start=0.0, end=1000.0, step=1,width=200)
+evan_demand = Slider(title="van (electric)", value=demands['van electric'], start=0.0, end=1000.0, step=1,width=200)
 syn_air_demand = Slider(title="air (synthetic fuel)", value=demands['air synthetic'], start=0.0, end=1000.0, step=1,width=200)
 etrain_demand = Slider(title="rail (electric)", value=demands['rail electric'], start=0.0, end=1000.0, step=1,width=200)
 h2train_demand = Slider(title="rail (hydrogen)", value=demands['rail hydrogen'], start=0.0, end=1000.0, step=1,width=200)
@@ -238,7 +244,7 @@ car_weight = Slider(title="average car weight [kg]", value=1400, start=700, end=
 reg_break = Slider(title="regenerative breaking [% expl.]", value=0, start=0, end=100, step=5,width=200)
 drag_fric = Slider(title="reduced drag & friction [% expl.]", value=0, start=0, end=100, step=5,width=200)
 
-inputs = row(column(div1,walk_demand,bike_demand,ecar_demand,h2car_demand),
+inputs = row(column(div1,walk_demand,bike_demand,ecar_demand,h2car_demand,evan_demand),
               column(div1_1,bus_demand,etrain_demand,h2train_demand,syn_air_demand),
               column(div2,etrain_freight_demand,eHGV_demand,h2HGV_demand),
               column(div3,car_util,train_util,bus_util,HGV_util,train_freight_util),
@@ -265,7 +271,12 @@ def update_data():
     bus_source.data['demand'] = [bus_demand.value]
     bus_source.data['intensity'] = [intensities['bus electric'] * 0.5 / (bus_util.value/100)*RB_factor*DF_factor]
 
-    
+    van_d = evan_demand.value
+    van_source.data['demand'] = [van_d]
+    van_source.data['intensity'] = [intensities['van electric'] *RB_factor*DF_factor]
+     
+
+
     synair_d = syn_air_demand.value
     plane_source.data['demand'] = [synair_d]
     
@@ -307,6 +318,7 @@ def update_data():
     heights[0] += train_freight_source.data['demand'][0]*train_freight_source.data['intensity'][0]
     heights[0] += trainH2_source.data['demand'][0]*trainH2_source.data['intensity'][0]
     heights[0] += bus_source.data['demand'][0]*bus_source.data['intensity'][0]
+    heights[0] += van_source.data['demand'][0]*van_source.data['intensity'][0]
 
 
     bar_source.data['heights'] = heights
@@ -339,7 +351,7 @@ def update_data():
 
     #source.data = dict(x=x, y=y)
 
-for w in [ecar_demand,h2car_demand,bus_demand,bus_util,syn_air_demand,etrain_demand,walk_demand,bike_demand,h2train_demand,car_util,train_util,h2HGV_demand,eHGV_demand,HGV_util,etrain_freight_demand,train_freight_util,car_weight,reg_break,drag_fric]:
+for w in [ecar_demand,h2car_demand,evan_demand,bus_demand,bus_util,syn_air_demand,etrain_demand,walk_demand,bike_demand,h2train_demand,car_util,train_util,h2HGV_demand,eHGV_demand,HGV_util,etrain_freight_demand,train_freight_util,car_weight,reg_break,drag_fric]:
     w.on_change('value', lambda attr, old, new: update_data())
 
 update_data()
