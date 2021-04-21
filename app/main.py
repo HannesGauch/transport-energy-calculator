@@ -192,6 +192,51 @@ barchart.add_layout(label)
 
 barchart.xgrid.grid_line_color = None
 
+
+
+heights2 = [801]
+
+bar2_source = ColumnDataSource(data=dict(names=names, heights=heights2))
+
+
+barchart2 = figure(x_range=(0,1), y_range=(0,200), plot_width=150,plot_height=450,
+           toolbar_location=None, tools="",y_axis_label='passenger transport demand [Gpkm]')
+barchart2.yaxis.axis_label_text_font_style = "normal"
+
+barchart2.vbar(x='names', top='heights', width=0.9, source=bar2_source)
+barchart2.line([0,1],[801,801],color='chartreuse',line_width=3,line_dash='dashed')
+barchart2.xaxis.major_tick_line_color = None
+barchart2.xaxis.minor_tick_line_color = None
+barchart2.xaxis.major_label_text_font_size = '0pt' 
+barchart2.xaxis.major_label_text_font_size = '0pt' 
+label = Label(x=0.5,y=801,text='today',text_align='center',text_color='chartreuse')
+barchart2.add_layout(label)
+
+
+barchart2.xgrid.grid_line_color = None
+
+
+heights3 = [178]
+
+bar3_source = ColumnDataSource(data=dict(names=names, heights=heights3))
+
+
+barchart3 = figure(x_range=(0,1), y_range=(0,200), plot_width=150,plot_height=450,
+           toolbar_location=None, tools="",y_axis_label='freight transport demand [Gtkm]')
+barchart3.yaxis.axis_label_text_font_style = "normal"
+
+barchart3.vbar(x='names', top='heights', width=0.9, source=bar3_source)
+barchart3.line([0,1],[178,178],color='chartreuse',line_width=3,line_dash='dashed')
+barchart3.xaxis.major_tick_line_color = None
+barchart3.xaxis.minor_tick_line_color = None
+barchart3.xaxis.major_label_text_font_size = '0pt' 
+barchart3.xaxis.major_label_text_font_size = '0pt' 
+label = Label(x=0.5,y=178,text='today',text_align='center',text_color='chartreuse')
+barchart3.add_layout(label)
+
+
+barchart3.xgrid.grid_line_color = None
+
 #barchart.legend.orientation = "horizontal"
 #barchart.legend.location = "top_center"
 
@@ -250,14 +295,14 @@ eHGV_demand = Slider(title="HGV/LGV (electric)("+str(demands['HGV electric'])+")
 h2HGV_demand = Slider(title="HGV/LGV (hydrogen)("+str(demands['HGV hydrogen'])+")", value=demands['HGV hydrogen'], start=0.0, end=1000.0, step=1,width=200)
 
 
-car_util = Slider(title="passengers per car", value=1.5, start=1, end=4, step=0.1,width=200)
-train_util = Slider(title="train occupancy rate [%]", value=50, start=1, end=100, step=1,width=200)
-bus_util = Slider(title="bus occupancy rate [%]", value=50, start=1, end=100, step=1,width=200)
-HGV_util = Slider(title="HGV average load factor", value=0.5, start=0.1, end=1, step=0.05,width=200)
-train_freight_util = Slider(title="freight train load factor", value=0.5, start=0.1, end=1, step=0.05,width=200)
+car_util = Slider(title="passengers per car (1.5)", value=1.5, start=1, end=4, step=0.1,width=200)
+train_util = Slider(title="train occupancy rate [%] (50)", value=50, start=1, end=100, step=1,width=200)
+bus_util = Slider(title="bus occupancy rate [%] (50)", value=50, start=1, end=100, step=1,width=200)
+HGV_util = Slider(title="HGV average load factor (0.5)", value=0.5, start=0.1, end=1, step=0.05,width=200)
+train_freight_util = Slider(title="freight train load factor (0.5)", value=0.5, start=0.1, end=1, step=0.05,width=200)
 
 
-car_weight = Slider(title="average car weight [kg]", value=1400, start=700, end=2100, step=50,width=200)
+car_weight = Slider(title="average car weight [kg] (1400)", value=1400, start=700, end=2100, step=50,width=200)
 #car_RB = Slider(title="cars: exploiting reg. breaking [%]", value=0, start=0, end=100, step=5,width=200)
 #car_DF = Slider(title="cars: reduced drag & friction [%]", value=0, start=0, end=100, step=5,width=200)
 #train_RB = Slider(title="trains: exploiting reg. breaking [%]", value=0, start=0, end=100, step=5,width=200)
@@ -342,10 +387,33 @@ def update_data():
     heights[0] += trainH2_source.data['demand'][0]*trainH2_source.data['intensity'][0]
     heights[0] += bus_source.data['demand'][0]*bus_source.data['intensity'][0]
     heights[0] += van_source.data['demand'][0]*van_source.data['intensity'][0]
+    
+    
+    heights2[0] = (car_source.data['demand'][0]
+                   + carH2_source.data['demand'][0]
+                   + plane_source.data['demand'][0]
+                   + train_source.data['demand'][0]
+                   + trainH2_source.data['demand'][0]
+                   + bus_source.data['demand'][0]
+                   + van_source.data['demand'][0]
+                   + walk_source.data['demand'][0]
+                   + bike_source.data['demand'][0])
+    
+    heights3[0] = (hgvE_source.data['demand'][0]
+                   + hgvH2_source.data['demand'][0]
+                   + train_freight_source.data['demand'][0])
+    
+    # print(heights3[0])
 
 
     bar_source.data['heights'] = heights
     barchart.y_range.end = max(heights[0]+20,200)
+    
+    bar2_source.data['heights'] = heights2
+    barchart2.y_range.end = max(heights2[0]+100,1000)
+    
+    bar3_source.data['heights'] = heights3
+    barchart3.y_range.end = max(heights3[0]+40,222)
     
     
     # no icons if demand = 0
@@ -380,7 +448,7 @@ for w in [ecar_demand,h2car_demand,evan_demand,bus_demand,bus_util,syn_air_deman
 update_data()
 
 #curdoc().add_root(column(row(plot,barchart),inputs) )
-curdoc().add_root(layout(children=[[plot,Spacer(width=50),barchart],[inputs]],sizing_mode='fixed'))
+curdoc().add_root(layout(children=[[plot,Spacer(width=50),barchart,barchart2,barchart3],[inputs]],sizing_mode='fixed'))
 #curdoc().add_root(gridplot([[plot, barchart], [inputs1, inputs2]], sizing_mode='scale_both'))
 
 
