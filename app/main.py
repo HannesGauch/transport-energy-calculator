@@ -68,6 +68,8 @@ demands = {'car electric':539,'car hydrogen':0,'van electric':134,'bus electric'
 car_dict = {'intensity':[intensities['car electric']],'demand':[demands['car electric']]}
 car_source = ColumnDataSource(data=car_dict)
 car_source.data['url']=['app/static/electric_car.png']
+car_source_fixed = ColumnDataSource()
+car_source_fixed.data.update(car_source.data)
 
 carH2_dict = {'intensity':[intensities['car hydrogen']],'demand':[demands['car hydrogen']]}
 carH2_source = ColumnDataSource(data=carH2_dict)
@@ -76,7 +78,8 @@ carH2_source.data['url']=['app/static/hydrogen_car.png']
 bus_dict = {'intensity':[intensities['bus electric']],'demand':[demands['bus electric']]}
 bus_source = ColumnDataSource(data=bus_dict)
 bus_source.data['url']=['app/static/bus-electric.png']
-
+bus_source_fixed = ColumnDataSource()
+bus_source_fixed.data.update(bus_source.data)
 
 plane_dict = {'intensity':[intensities['air synthetic']],'demand':[demands['air synthetic']]}
 plane_source = ColumnDataSource(data=plane_dict)
@@ -85,6 +88,8 @@ plane_source.data['url']=['app/static/plane-synthetic.png']
 train_dict = {'intensity':[intensities['rail electric']],'demand':[demands['rail electric']]}
 train_source = ColumnDataSource(data=train_dict)
 train_source.data['url']=['app/static/train-electric.png']
+train_source_fixed = ColumnDataSource()
+train_source_fixed.data.update(train_source.data)
 
 trainH2_dict = {'intensity':[intensities['rail hydrogen']],'demand':[demands['rail hydrogen']]}
 trainH2_source = ColumnDataSource(data=trainH2_dict)
@@ -93,18 +98,26 @@ trainH2_source.data['url']=['app/static/train-hydrogen.png']
 train_freight_dict = {'intensity':[intensities['rail freight electric']],'demand':[demands['rail freight electric']]}
 train_freight_source = ColumnDataSource(data=train_freight_dict)
 train_freight_source.data['url']=['app/static/train-freight-electric.png']
+train_freight_source_fixed = ColumnDataSource()
+train_freight_source_fixed.data.update(train_freight_source.data)
 
 walk_dict = {'intensity':[intensities['walk']],'demand':[demands['walk']]}
 walk_source = ColumnDataSource(data=walk_dict)
 walk_source.data['url']=['app/static/walk-walking.png']
+walk_source_fixed = ColumnDataSource()
+walk_source_fixed.data.update(walk_source.data)
 
 bike_dict = {'intensity':[intensities['bicycle']],'demand':[demands['bicycle']]}
 bike_source = ColumnDataSource(data=bike_dict)
 bike_source.data['url']=['app/static/bicycle.png']
+bike_source_fixed = ColumnDataSource()
+bike_source_fixed.data.update(bike_source.data)
 
 hgvE_dict = {'intensity':[intensities['HGV electric']],'demand':[demands['HGV electric']]}
 hgvE_source = ColumnDataSource(data=hgvE_dict)
 hgvE_source.data['url']=['app/static/delivery-van-electric.png']
+hgvE_source_fixed = ColumnDataSource()
+hgvE_source_fixed.data.update(hgvE_source.data)
 
 hgvH2_dict = {'intensity':[intensities['HGV hydrogen']],'demand':[demands['HGV hydrogen']]}
 hgvH2_source = ColumnDataSource(data=hgvH2_dict)
@@ -113,6 +126,8 @@ hgvH2_source.data['url']=['app/static/delivery-van-hydrogen.png']
 van_dict = {'intensity':[intensities['van electric']],'demand':[demands['van electric']]}
 van_source = ColumnDataSource(data=van_dict)
 van_source.data['url']=['app/static/van_electric.png']
+van_source_fixed = ColumnDataSource()
+van_source_fixed.data.update(van_source.data)
 
 # contour plot
 contour_source = get_contour_data(X,Y,Z,levels)
@@ -142,6 +157,14 @@ plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',so
 plot.image_url(url='url',x='intensity',y='demand',h=50,w=0.06,anchor='center',source=train_freight_source)
 plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=bus_source)
 plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=van_source)
+#shadow icons
+plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=car_source_fixed,alpha=0.3)
+plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=bike_source_fixed,alpha=0.3)
+plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=walk_source_fixed,alpha=0.3)
+plot.image_url(url='url',x='intensity',y='demand',h=80,w=0.05,anchor='center',source=train_source_fixed,alpha=0.3)
+plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=bus_source_fixed,alpha=0.3)
+plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=van_source_fixed,alpha=0.3)
+plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=hgvE_source_fixed,alpha=0.3)
 
 # bar chart
 #fruits = ['Apples', 'Pears', 'Nectarines', 'Plums', 'Grapes', 'Strawberries']
@@ -212,19 +235,19 @@ div4 = Div(
     height=20,
 )
 
-walk_demand = Slider(title="walk", value=demands['walk'], start=0.0, end=1000.0, step=1,width=200)
-bike_demand = Slider(title="bicycle", value=demands['bicycle'], start=0.0, end=1000.0, step=1,width=200)
-ecar_demand = Slider(title="car (electric)", value=demands['car electric'], start=0.0, end=1000.0, step=1,width=200)
-h2car_demand = Slider(title="car (hydrogen)", value=demands['car hydrogen'], start=0.0, end=1000.0, step=1,width=200)
-evan_demand = Slider(title="van (electric)", value=demands['van electric'], start=0.0, end=1000.0, step=1,width=200)
-syn_air_demand = Slider(title="air (synthetic fuel)", value=demands['air synthetic'], start=0.0, end=1000.0, step=1,width=200)
-etrain_demand = Slider(title="rail (electric)", value=demands['rail electric'], start=0.0, end=1000.0, step=1,width=200)
-h2train_demand = Slider(title="rail (hydrogen)", value=demands['rail hydrogen'], start=0.0, end=1000.0, step=1,width=200)
-etrain_freight_demand = Slider(title="rail (electric)", value=demands['rail freight electric'], start=0.0, end=1000.0, step=1,width=200)
-bus_demand = Slider(title="bus (electric)", value=demands['bus electric'], start=0.0, end=1000.0, step=1,width=200)
+walk_demand = Slider(title="walk ("+str(demands['walk'])+")", value=demands['walk'], start=0.0, end=1000.0, step=1,width=200)
+bike_demand = Slider(title="bicycle ("+str(demands['bicycle'])+")", value=demands['bicycle'], start=0.0, end=1000.0, step=1,width=200)
+ecar_demand = Slider(title="car (electric) ("+str(demands['car electric'])+")", value=demands['car electric'], start=0.0, end=1000.0, step=1,width=200)
+h2car_demand = Slider(title="car (hydrogen)("+str(demands['car hydrogen'])+")", value=demands['car hydrogen'], start=0.0, end=1000.0, step=1,width=200)
+evan_demand = Slider(title="van (electric)("+str(demands['van electric'])+")", value=demands['van electric'], start=0.0, end=1000.0, step=1,width=200)
+syn_air_demand = Slider(title="air (synthetic fuel)("+str(demands['air synthetic'])+")", value=demands['air synthetic'], start=0.0, end=1000.0, step=1,width=200)
+etrain_demand = Slider(title="rail (electric)("+str(demands['rail electric'])+")", value=demands['rail electric'], start=0.0, end=1000.0, step=1,width=200)
+h2train_demand = Slider(title="rail (hydrogen)("+str(demands['rail hydrogen'])+")", value=demands['rail hydrogen'], start=0.0, end=1000.0, step=1,width=200)
+etrain_freight_demand = Slider(title="rail (electric)("+str(demands['rail freight electric'])+")", value=demands['rail freight electric'], start=0.0, end=1000.0, step=1,width=200)
+bus_demand = Slider(title="bus (electric)("+str(demands['bus electric'])+")", value=demands['bus electric'], start=0.0, end=1000.0, step=1,width=200)
 
-eHGV_demand = Slider(title="HGV/LGV (electric)", value=demands['HGV electric'], start=0.0, end=1000.0, step=1,width=200)
-h2HGV_demand = Slider(title="HGV/LGV (hydrogen)", value=demands['HGV hydrogen'], start=0.0, end=1000.0, step=1,width=200)
+eHGV_demand = Slider(title="HGV/LGV (electric)("+str(demands['HGV electric'])+")", value=demands['HGV electric'], start=0.0, end=1000.0, step=1,width=200)
+h2HGV_demand = Slider(title="HGV/LGV (hydrogen)("+str(demands['HGV hydrogen'])+")", value=demands['HGV hydrogen'], start=0.0, end=1000.0, step=1,width=200)
 
 
 car_util = Slider(title="passengers per car", value=1.5, start=1, end=4, step=0.1,width=200)
