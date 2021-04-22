@@ -394,7 +394,7 @@ div5 = Div(
     text="""
           <p><b>Explanations:</b> <br>
           - UK electricity supply for ground transport in 2050 is taken from the <a href="https://ukfires.org/absolute-zero/">UK FIRES Absolute Zero report</a>  <br>
-          - The default input numbers (default settings and numbers in parantheses) correspond to UK domestic ground transport in 2018 under the assumption that everything is electrified. <br>
+          - The default input numbers (numbers in parantheses and shadow icons) correspond to UK domestic ground transport in 2018 under the assumption that everything is electrified. <br>
           - The energy intensities represent fleet averages <br>
           - The demand numbers were sourced from <a href="https://www.gov.uk/transport#research_and_statistics">UK national statistics </a> <br>
           - Refresh the page to get back to default values <br>
