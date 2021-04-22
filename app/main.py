@@ -397,6 +397,7 @@ div5 = Div(
           - The default input numbers (default settings and numbers in parantheses) correspond to UK domestic ground transport in 2018 under the assumption that everything is electrified. <br>
           - The energy intensities represent fleet averages <br>
           - The demand numbers were sourced from <a href="https://www.gov.uk/transport#research_and_statistics">UK national statistics </a> <br>
+          - Refresh the page to get back to default values <br>
           - For comments and suggestions please contact <a href="mailto:hlg46@cam.ac.uk">hlg46@cam.ac.uk</a>
           </p>
           """,
