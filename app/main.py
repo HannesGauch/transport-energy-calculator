@@ -256,13 +256,13 @@ barchart2.yaxis.axis_label_text_font_style = "normal"
 
 barchart2.vbar_stack(modes, x='names', width=0.9, source=bar2_source,color=colors)
 
-barchart2.line([0,1],[801,801],color='black',line_width=3,line_dash='dashed')
+barchart2.line([0,1],[808,808],color='black',line_width=3,line_dash='dashed')
 barchart2.xaxis.major_tick_line_color = None
 barchart2.xaxis.minor_tick_line_color = None
 barchart2.xgrid.grid_line_color = None
 barchart2.xaxis.major_label_text_font_size = '0pt' 
 barchart2.xaxis.major_label_text_font_size = '0pt' 
-label = Label(x=0.5,y=801,text='today',text_align='center',text_color='black')
+label = Label(x=0.5,y=808,text='today',text_align='center',text_color='black')
 barchart2.add_layout(label)
 # barchart2.add_layout(barchart.legend[0], 'right')
 
