@@ -144,6 +144,9 @@ plot = figure(plot_width=729,plot_height=450,x_range=[-0.04,1], y_range=[-20,700
               x_axis_label='energy intensity [kWh/pkm or kWh/tkm]',y_axis_label='demand [Gpkm or Gtkm]')
 plot.yaxis.axis_label_text_font_style = "normal"
 plot.xaxis.axis_label_text_font_style = "normal"
+plot.xaxis.axis_label_text_font_size = "12pt"
+plot.yaxis.axis_label_text_font_size = "12pt"
+
 
 
 plot.multi_line(xs='xs', ys='ys', line_color='line_color', source=contour_source)
@@ -232,6 +235,9 @@ bar_source = ColumnDataSource(data=data)
 barchart = figure(x_range=(0,1), y_range=(0,200), plot_width=300,plot_height=450,
             toolbar_location=None, tools="",y_axis_label='electricity demand [TWh]')
 barchart.yaxis.axis_label_text_font_style = "normal"
+barchart.yaxis.axis_label_text_font_size = "12pt"
+
+
 
 barchart.vbar_stack(modes, x='names', width=0.9, source=bar_source,color=colors,
              legend=[value(x) for x in modes])
@@ -253,6 +259,7 @@ bar2_source = ColumnDataSource(data=data)
 barchart2 = figure(x_range=(0,1), y_range=(0,200), plot_width=150,plot_height=450,
            toolbar_location=None, tools="",y_axis_label='passenger transport demand [Gpkm]')
 barchart2.yaxis.axis_label_text_font_style = "normal"
+barchart2.yaxis.axis_label_text_font_size = "12pt"
 
 barchart2.vbar_stack(modes, x='names', width=0.9, source=bar2_source,color=colors)
 
@@ -269,7 +276,7 @@ barchart2.add_layout(label)
 
 
 
-heights2 = [801]
+# heights2 = [801]
 
 # bar2_source = ColumnDataSource(data=dict(names=names, heights=heights2))
 
@@ -296,6 +303,7 @@ bar3_source = ColumnDataSource(data=data)
 barchart3 = figure(x_range=(0,1), y_range=(0,200), plot_width=150,plot_height=450,
             toolbar_location=None, tools="",y_axis_label='freight transport demand [Gtkm]')
 barchart3.yaxis.axis_label_text_font_style = "normal"
+barchart3.yaxis.axis_label_text_font_size = "12pt"
 
 barchart3.vbar_stack(modes, x='names', width=0.9, source=bar3_source,color=colors)
 
@@ -334,42 +342,67 @@ barchart3.add_layout(label)
 
 div1 = Div(
     text="""
-          <p>Demand for private passenger transport [Gpkm]:</p>
+          <p><b>Set demand for private passenger transport [Gpkm]:</b></p>
           """,
     width=200,
-    height=20,
+    height=10,
+    #style={'font-size':'110%'}
 )
 
 div1_1 = Div(
     text="""
-          <p>Demand for public passenger transport [Gpkm]:</p>
+          <p><b>Set demand for public passenger transport [Gpkm]:</b></p>
           """,
     width=200,
-    height=20,
+    height=10,
 )
 
 div2 = Div(
     text="""
-          <p>Demand for freight transport [Gtkm]:</p>
+          <p><b>Set demand for freight transport [Gtkm]:</b></p>
           """,
     width=200,
-    height=20,
+    height=10,
 )
 
 div3 = Div(
     text="""
-          <p>Vehicle utilisation:</p>
+          <p><b>Set average vehicle utilisation:</b></p>
           """,
     width=200,
-    height=20,
+    height=10,
 )
 
 div4 = Div(
     text="""
-          <p> Efficiency improvements:</p>
+          <p><b>Set efficiency improvements:</b></p>
           """,
     width=200,
+    height=10,
+)
+
+div5 = Div(
+    text="""
+          <p><b>Input levers:</b></p>
+          """,
+    width=200,
+    height=5,
+    style={'font-size':'120%'}
+)
+
+div5 = Div(
+    text="""
+          <p><b>Explanations:</b> <br>
+          - UK electricity supply for ground transport in 2050 is taken from the <a href="https://ukfires.org/absolute-zero/">UK FIRES Absolute Zero report</a>  <br>
+          - The default input numbers (default settings and numbers in parantheses) correspond to UK domestic ground transport in 2018 under the assumption that everything is electrified. <br>
+          - The energy intensities represent fleet averages <br>
+          - The demand numbers were sourced from <a href="https://www.gov.uk/transport#research_and_statistics">UK national statistics </a> <br>
+          - For comments and suggestions please contact <a href="mailto:hlg46@cam.ac.uk">hlg46@cam.ac.uk</a>
+          </p>
+          """,
+    width=1100,
     height=20,
+    style={'font-size':'100%'}
 )
 
 walk_demand = Slider(title="walk ("+str(demands['walk'])+")", value=demands['walk'], start=0.0, end=1000.0, step=1,width=200)
@@ -571,7 +604,7 @@ for w in [ecar_demand,h2car_demand,evan_demand,bus_demand,bus_util,motorcycle_de
 update_data()
 
 #curdoc().add_root(column(row(plot,barchart),inputs) )
-curdoc().add_root(layout(children=[[plot,Spacer(width=50),barchart,barchart2,barchart3],[inputs]],sizing_mode='fixed'))
+curdoc().add_root(layout(children=[[plot,Spacer(width=50),barchart,barchart2,barchart3],[inputs],[div5]],sizing_mode='fixed'))
 #curdoc().add_root(gridplot([[plot, barchart], [inputs1, inputs2]], sizing_mode='scale_both'))
 
 
