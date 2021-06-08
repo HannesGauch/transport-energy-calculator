@@ -1,9 +1,0 @@
-Next steps and items for discussion:
-
-04.06.2021:
-- which processes should be included? (Lukas suggestions)
-- how to incorporate industrial processes? (
-	- what is a good data structure?
-	- how detailed?
-- documentation of the model: what is needed for the model documentation?
-- timeline and milestones?
