@@ -413,12 +413,12 @@ evan_demand = Slider(title="van (electric) ("+str(demands['van electric'])+")", 
 syn_air_demand = Slider(title="air (synthetic fuel) ("+str(demands['air synthetic'])+")", value=demands['air synthetic'], start=0.0, end=1000.0, step=1,width=200)
 etrain_demand = Slider(title="rail (electric) ("+str(demands['rail electric'])+")", value=demands['rail electric'], start=0.0, end=700.0, step=1,width=200)
 h2train_demand = Slider(title="rail (hydrogen) ("+str(demands['rail hydrogen'])+")", value=demands['rail hydrogen'], start=0.0, end=700.0, step=1,width=200)
-etrain_freight_demand = Slider(title="rail (electric) ("+str(demands['rail freight electric'])+")", value=demands['rail freight electric'], start=0.0, end=700.0, step=1,width=200)
+etrain_freight_demand = Slider(title="rail (electric) ("+str(demands['rail freight electric'])+")", value=demands['rail freight electric'], start=0.0, end=300.0, step=1,width=200)
 bus_demand = Slider(title="bus (electric) ("+str(demands['bus electric'])+")", value=demands['bus electric'], start=0.0, end=700.0, step=1,width=200)
 motorcycle_demand = Slider(title="motorcycle (electric) ("+str(demands['motorcycle'])+")", value=demands['motorcycle'], start=0.0, end=700.0, step=1,width=200)
 
-eHGV_demand = Slider(title="HGV/LGV (electric) ("+str(demands['HGV electric'])+")", value=demands['HGV electric'], start=0.0, end=700.0, step=1,width=200)
-h2HGV_demand = Slider(title="HGV/LGV (hydrogen) ("+str(demands['HGV hydrogen'])+")", value=demands['HGV hydrogen'], start=0.0, end=700.0, step=1,width=200)
+eHGV_demand = Slider(title="HGV (electric) ("+str(demands['HGV electric'])+")", value=demands['HGV electric'], start=0.0, end=300.0, step=1,width=200)
+h2HGV_demand = Slider(title="HGV (hydrogen) ("+str(demands['HGV hydrogen'])+")", value=demands['HGV hydrogen'], start=0.0, end=300.0, step=1,width=200)
 
 
 car_util = Slider(title="passengers per car (1.5)", value=1.5, start=1, end=4, step=0.1,width=200)
