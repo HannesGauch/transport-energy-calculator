@@ -59,7 +59,7 @@ y = np.arange(0, 1000, 1)
 X, Y = np.meshgrid(x, y)
 Z = X*Y
 
-intensities = {'car electric':0.15,'car hydrogen':0.36,'van electric':0.267,'motorcycle':0.04,'bus electric':0.14,'rail electric':0.08,'rail hydrogen':0.192,'air synthetic':0.9,'air hydrogen':1.4,'bicycle':0.0,'walk':0.0,'HGV electric':0.361,'HGV hydrogen':0.889,'rail freight electric':0.09}
+intensities = {'car electric':0.15,'car hydrogen':0.36,'van electric':0.267,'motorcycle':0.04,'bus electric':0.14,'rail electric':0.08,'rail hydrogen':0.192,'air synthetic':0.9,'air hydrogen':1.4,'bicycle':0.0,'walk':0.0,'HGV electric':0.161,'HGV hydrogen':0.4025,'rail freight electric':0.09}
 demands = {'car electric':539,'car hydrogen':0,'van electric':134,'motorcycle':5,'bus electric':29,'rail electric':81,'rail hydrogen':0,'walk':12,'bicycle':6,'air synthetic':0,'HGV electric':161,'HGV hydrogen':0,'rail freight electric':17}
 # N = 400
 # x = np.linspace(-1, 1, N)
@@ -232,7 +232,7 @@ data = { 'names' : names,
 
 bar_source = ColumnDataSource(data=data)
 
-barchart = figure(x_range=(0,1), y_range=(0,200), plot_width=300,plot_height=450,
+barchart = figure(x_range=(0,1), y_range=(0,300), plot_width=300,plot_height=450,
             toolbar_location=None, tools="",y_axis_label='electricity demand [TWh]')
 barchart.yaxis.axis_label_text_font_style = "normal"
 barchart.yaxis.axis_label_text_font_size = "12pt"
@@ -553,7 +553,7 @@ def update_data():
     
 
 
-    barchart.y_range.end = max(Etot+20,200)
+    barchart.y_range.end = max(Etot+20,300)
     
     bar2_source.data['walk'] = [walk_demand.value]
     bar2_source.data['bicycle'] = [bike_demand.value]
