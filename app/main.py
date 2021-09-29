@@ -140,15 +140,12 @@ van_source_fixed.data.update(van_source.data)
 
 # contour plot
 contour_source = get_contour_data(X,Y,Z,levels)
-plot = figure(plot_width=729,plot_height=450,x_range=[-0.04,1], y_range=[-20,700],
+plot = figure(plot_width=729,plot_height=450,x_range=[-0.04,0.5], y_range=[-20,700],
               x_axis_label='energy intensity [kWh/pkm or kWh/tkm]',y_axis_label='demand [Gpkm or Gtkm]')
 plot.yaxis.axis_label_text_font_style = "normal"
 plot.xaxis.axis_label_text_font_style = "normal"
 plot.xaxis.axis_label_text_font_size = "12pt"
 plot.yaxis.axis_label_text_font_size = "12pt"
-
-
-
 plot.multi_line(xs='xs', ys='ys', line_color='line_color', source=contour_source)
 plot.text(x='xt',y='yt',text='text',source=contour_source,text_baseline='middle',text_align='center',angle=-0.5,text_font_size='10px')
 #plot.circle(intensities['car electric'], demands['car electric'], line_color="yellow", size=12)
@@ -156,31 +153,33 @@ plot.text(x='xt',y='yt',text='text',source=contour_source,text_baseline='middle'
 #plot.circle(intensities['walk'], demands['walk'], line_color="yellow", size=12)
 #plot.circle(intensities['bicycle'], demands['bicycle'], line_color="yellow", size=12)
 #plot.circle(intensities['air synthetic'], demands['air synthetic'], line_color="yellow", size=12)
-plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=car_source)
-plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=carH2_source)
 
-plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=bike_source)
-plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=walk_source)
-plot.image_url(url='url',x='intensity',y='demand',h=50,w=0.07,anchor='center',source=plane_source)
-plot.image_url(url='url',x='intensity',y='demand',h=80,w=0.05,anchor='center',source=train_source)
-plot.image_url(url='url',x='intensity',y='demand',h=70,w=0.05,anchor='center',source=trainH2_source)
-plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=hgvE_source)
-plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=hgvH2_source)
-plot.image_url(url='url',x='intensity',y='demand',h=50,w=0.06,anchor='center',source=train_freight_source)
-plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=bus_source)
-plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=van_source)
-plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=motorcycle_source)
+image_widths = {'car':0.07,'bike':0.07,'walk':0.07,'plane':0.07,'train':0.05,'hgv':0.05,'train_freight':0.06,'bus':0.05,'van':0.05,'motorcycle':0.05}
+icon_car = plot.image_url(url='url',x='intensity',y='demand',h=40,w=image_widths['car'],anchor='center',source=car_source)
+icon_carH2 = plot.image_url(url='url',x='intensity',y='demand',h=40,w=image_widths['car'],anchor='center',source=carH2_source)
+
+icon_bike = plot.image_url(url='url',x='intensity',y='demand',h=40,w=image_widths['bike'],anchor='center',source=bike_source)
+icon_walk = plot.image_url(url='url',x='intensity',y='demand',h=40,w=image_widths['walk'],anchor='center',source=walk_source)
+icon_plane = plot.image_url(url='url',x='intensity',y='demand',h=50,w=image_widths['plane'],anchor='center',source=plane_source)
+icon_train = plot.image_url(url='url',x='intensity',y='demand',h=80,w=image_widths['train'],anchor='center',source=train_source)
+icon_trainH2 = plot.image_url(url='url',x='intensity',y='demand',h=70,w=image_widths['train'],anchor='center',source=trainH2_source)
+icon_hgv = plot.image_url(url='url',x='intensity',y='demand',h=60,w=image_widths['hgv'],anchor='center',source=hgvE_source)
+icon_hgvH2 = plot.image_url(url='url',x='intensity',y='demand',h=60,w=image_widths['hgv'],anchor='center',source=hgvH2_source)
+icon_train_freight = plot.image_url(url='url',x='intensity',y='demand',h=50,w=image_widths['train_freight'],anchor='center',source=train_freight_source)
+icon_bus = plot.image_url(url='url',x='intensity',y='demand',h=60,w=image_widths['bus'],anchor='center',source=bus_source)
+icon_van = plot.image_url(url='url',x='intensity',y='demand',h=60,w=image_widths['van'],anchor='center',source=van_source)
+icon_motorcycle = plot.image_url(url='url',x='intensity',y='demand',h=60,w=image_widths['motorcycle'],anchor='center',source=motorcycle_source)
 
 #shadow icons
-plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=car_source_fixed,alpha=0.3)
-plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=bike_source_fixed,alpha=0.3)
-plot.image_url(url='url',x='intensity',y='demand',h=40,w=0.07,anchor='center',source=walk_source_fixed,alpha=0.3)
-plot.image_url(url='url',x='intensity',y='demand',h=80,w=0.05,anchor='center',source=train_source_fixed,alpha=0.3)
-plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=bus_source_fixed,alpha=0.3)
-plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=van_source_fixed,alpha=0.3)
-plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=hgvE_source_fixed,alpha=0.3)
-plot.image_url(url='url',x='intensity',y='demand',h=50,w=0.06,anchor='center',source=train_freight_source_fixed,alpha=0.3)
-plot.image_url(url='url',x='intensity',y='demand',h=60,w=0.05,anchor='center',source=motorcycle_source_fixed,alpha=0.3)
+icon_car0 = plot.image_url(url='url',x='intensity',y='demand',h=40,w=image_widths['car'],anchor='center',source=car_source_fixed,alpha=0.3)
+icon_bike0 = plot.image_url(url='url',x='intensity',y='demand',h=40,w=image_widths['bike'],anchor='center',source=bike_source_fixed,alpha=0.3)
+icon_walk0 = plot.image_url(url='url',x='intensity',y='demand',h=40,w=image_widths['walk'],anchor='center',source=walk_source_fixed,alpha=0.3)
+icon_train0 = plot.image_url(url='url',x='intensity',y='demand',h=80,w=image_widths['train'],anchor='center',source=train_source_fixed,alpha=0.3)
+icon_bus0 = plot.image_url(url='url',x='intensity',y='demand',h=60,w=image_widths['bus'],anchor='center',source=bus_source_fixed,alpha=0.3)
+icon_van0 = plot.image_url(url='url',x='intensity',y='demand',h=60,w=image_widths['van'],anchor='center',source=van_source_fixed,alpha=0.3)
+icon_hgv0 = plot.image_url(url='url',x='intensity',y='demand',h=60,w=image_widths['hgv'],anchor='center',source=hgvE_source_fixed,alpha=0.3)
+icon_train_freight0 = plot.image_url(url='url',x='intensity',y='demand',h=50,w=image_widths['train_freight'],anchor='center',source=train_freight_source_fixed,alpha=0.3)
+icon_motorcycle0 = plot.image_url(url='url',x='intensity',y='demand',h=60,w=image_widths['motorcycle'],anchor='center',source=motorcycle_source_fixed,alpha=0.3)
 
 # bar chart
 #fruits = ['Apples', 'Pears', 'Nectarines', 'Plums', 'Grapes', 'Strawberries']
@@ -406,20 +405,20 @@ div5 = Div(
     style={'font-size':'100%'}
 )
 
-walk_demand = Slider(title="walk ("+str(demands['walk'])+")", value=demands['walk'], start=0.0, end=1000.0, step=1,width=200)
-bike_demand = Slider(title="bicycle ("+str(demands['bicycle'])+")", value=demands['bicycle'], start=0.0, end=1000.0, step=1,width=200)
-ecar_demand = Slider(title="car (electric) ("+str(demands['car electric'])+")", value=demands['car electric'], start=0.0, end=1000.0, step=1,width=200)
-h2car_demand = Slider(title="car (hydrogen) ("+str(demands['car hydrogen'])+")", value=demands['car hydrogen'], start=0.0, end=1000.0, step=1,width=200)
-evan_demand = Slider(title="van (electric) ("+str(demands['van electric'])+")", value=demands['van electric'], start=0.0, end=1000.0, step=1,width=200)
+walk_demand = Slider(title="walk ("+str(demands['walk'])+")", value=demands['walk'], start=0.0, end=700.0, step=1,width=200)
+bike_demand = Slider(title="bicycle ("+str(demands['bicycle'])+")", value=demands['bicycle'], start=0.0, end=700.0, step=1,width=200)
+ecar_demand = Slider(title="car (electric) ("+str(demands['car electric'])+")", value=demands['car electric'], start=0.0, end=700.0, step=1,width=200)
+h2car_demand = Slider(title="car (hydrogen) ("+str(demands['car hydrogen'])+")", value=demands['car hydrogen'], start=0.0, end=700.0, step=1,width=200)
+evan_demand = Slider(title="van (electric) ("+str(demands['van electric'])+")", value=demands['van electric'], start=0.0, end=700.0, step=1,width=200)
 syn_air_demand = Slider(title="air (synthetic fuel) ("+str(demands['air synthetic'])+")", value=demands['air synthetic'], start=0.0, end=1000.0, step=1,width=200)
-etrain_demand = Slider(title="rail (electric) ("+str(demands['rail electric'])+")", value=demands['rail electric'], start=0.0, end=1000.0, step=1,width=200)
-h2train_demand = Slider(title="rail (hydrogen) ("+str(demands['rail hydrogen'])+")", value=demands['rail hydrogen'], start=0.0, end=1000.0, step=1,width=200)
-etrain_freight_demand = Slider(title="rail (electric) ("+str(demands['rail freight electric'])+")", value=demands['rail freight electric'], start=0.0, end=1000.0, step=1,width=200)
-bus_demand = Slider(title="bus (electric) ("+str(demands['bus electric'])+")", value=demands['bus electric'], start=0.0, end=1000.0, step=1,width=200)
-motorcycle_demand = Slider(title="motorcycle (electric) ("+str(demands['motorcycle'])+")", value=demands['motorcycle'], start=0.0, end=1000.0, step=1,width=200)
+etrain_demand = Slider(title="rail (electric) ("+str(demands['rail electric'])+")", value=demands['rail electric'], start=0.0, end=700.0, step=1,width=200)
+h2train_demand = Slider(title="rail (hydrogen) ("+str(demands['rail hydrogen'])+")", value=demands['rail hydrogen'], start=0.0, end=700.0, step=1,width=200)
+etrain_freight_demand = Slider(title="rail (electric) ("+str(demands['rail freight electric'])+")", value=demands['rail freight electric'], start=0.0, end=700.0, step=1,width=200)
+bus_demand = Slider(title="bus (electric) ("+str(demands['bus electric'])+")", value=demands['bus electric'], start=0.0, end=700.0, step=1,width=200)
+motorcycle_demand = Slider(title="motorcycle (electric) ("+str(demands['motorcycle'])+")", value=demands['motorcycle'], start=0.0, end=700.0, step=1,width=200)
 
-eHGV_demand = Slider(title="HGV/LGV (electric) ("+str(demands['HGV electric'])+")", value=demands['HGV electric'], start=0.0, end=1000.0, step=1,width=200)
-h2HGV_demand = Slider(title="HGV/LGV (hydrogen) ("+str(demands['HGV hydrogen'])+")", value=demands['HGV hydrogen'], start=0.0, end=1000.0, step=1,width=200)
+eHGV_demand = Slider(title="HGV/LGV (electric) ("+str(demands['HGV electric'])+")", value=demands['HGV electric'], start=0.0, end=700.0, step=1,width=200)
+h2HGV_demand = Slider(title="HGV/LGV (hydrogen) ("+str(demands['HGV hydrogen'])+")", value=demands['HGV hydrogen'], start=0.0, end=700.0, step=1,width=200)
 
 
 car_util = Slider(title="passengers per car (1.5)", value=1.5, start=1, end=4, step=0.1,width=200)
@@ -551,7 +550,59 @@ def update_data():
 
 
     
+    if plane_source.data['demand'][0] > 1e-8:
+        plot.x_range.end = 1.0
+        icon_car.glyph.w = image_widths['car']
+        icon_carH2.glyph.w = image_widths['car']   
+        icon_bike.glyph.w = image_widths['bike']
+        icon_walk.glyph.w = image_widths['walk']
+        icon_plane.glyph.w = image_widths['plane']
+        icon_train.glyph.w = image_widths['train']
+        icon_trainH2.glyph.w = image_widths['train']
+        icon_hgv.glyph.w = image_widths['hgv']
+        icon_hgvH2.glyph.w = image_widths['hgv']
+        icon_train_freight.glyph.w = image_widths['train_freight']
+        icon_bus.glyph.w = image_widths['bus']
+        icon_van.glyph.w = image_widths['van']
+        icon_motorcycle.glyph.w = image_widths['motorcycle']
+        
+        #shadow icons
+        icon_car0.glyph.w = image_widths['car']
+        icon_bike0.glyph.w = image_widths['bike']
+        icon_walk0.glyph.w = image_widths['walk']
+        icon_train0.glyph.w = image_widths['train']
+        icon_bus0.glyph.w = image_widths['bus']
+        icon_van0.glyph.w = image_widths['van']
+        icon_hgv0.glyph.w = image_widths['hgv']
+        icon_train_freight0.glyph.w = image_widths['train_freight']
+        icon_motorcycle0.glyph.w = image_widths['motorcycle']
 
+    else:
+        plot.x_range.end = 0.5
+        icon_car.glyph.w = image_widths['car']/2.
+        icon_carH2.glyph.w = image_widths['car']/2.     
+        icon_bike.glyph.w = image_widths['bike']/2.
+        icon_walk.glyph.w = image_widths['walk']/2.
+        icon_plane.glyph.w = image_widths['plane']/2.
+        icon_train.glyph.w = image_widths['train']/2.
+        icon_trainH2.glyph.w = image_widths['train']/2.
+        icon_hgv.glyph.w = image_widths['hgv']/2.
+        icon_hgvH2.glyph.w = image_widths['hgv']/2.
+        icon_train_freight.glyph.w = image_widths['train_freight']/2.
+        icon_bus.glyph.w = image_widths['bus']/2.
+        icon_van.glyph.w = image_widths['van']/2.
+        icon_motorcycle.glyph.w = image_widths['motorcycle']/2.
+        
+        #shadow icons
+        icon_car0.glyph.w = image_widths['car']/2.
+        icon_bike0.glyph.w = image_widths['bike']/2.
+        icon_walk0.glyph.w = image_widths['walk']/2.
+        icon_train0.glyph.w = image_widths['train']/2.
+        icon_bus0.glyph.w = image_widths['bus']/2.
+        icon_van0.glyph.w = image_widths['van']/2.
+        icon_hgv0.glyph.w = image_widths['hgv']/2.
+        icon_train_freight0.glyph.w = image_widths['train_freight']/2.
+        icon_motorcycle0.glyph.w = image_widths['motorcycle']/2.
 
     barchart.y_range.end = max(Etot+20,300)
     
@@ -601,6 +652,7 @@ def update_data():
 
 for w in [ecar_demand,h2car_demand,evan_demand,bus_demand,bus_util,motorcycle_demand,syn_air_demand,etrain_demand,walk_demand,bike_demand,h2train_demand,car_util,train_util,h2HGV_demand,eHGV_demand,HGV_util,etrain_freight_demand,train_freight_util,car_weight,reg_break,drag_fric]:
     w.on_change('value', lambda attr, old, new: update_data())
+
 
 update_data()
 
