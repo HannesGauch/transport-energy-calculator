@@ -445,66 +445,184 @@ inputs = row(column(div1,walk_demand,bike_demand,ecar_demand,h2car_demand,evan_d
               column(div4,car_weight,reg_break,drag_fric))
 
 
-def update_data():
-
-    # Get the current slider values
-    car_util_factor = 1.5 / car_util.value
-    car_weight_factor = (0.85-1)/(1000-1400)*(car_weight.value-1400)+1
+def update_data(changed):
+    
     RB_factor = (0.85-1)/(100)*(reg_break.value)+1
     DF_factor = (0.95-1)/(100)*(drag_fric.value)+1
 
+    if 'car' in changed:
+        car_util_factor = 1.5 / car_util.value
+        car_weight_factor = (0.85-1)/(1000-1400)*(car_weight.value-1400)+1    
     
-    ecar_d = ecar_demand.value
-    car_source.data['demand'] = [ecar_d]
-    car_source.data['intensity'] = [intensities['car electric'] * car_util_factor * car_weight_factor*RB_factor*DF_factor]
-    
-    h2car_d = h2car_demand.value
-    carH2_source.data['demand'] = [h2car_d]
-    carH2_source.data['intensity'] = [intensities['car hydrogen'] * car_util_factor * car_weight_factor*RB_factor*DF_factor]
+        ecar_d = ecar_demand.value
+        car_source.data['demand'] = [ecar_d]
+        car_source.data['intensity'] = [intensities['car electric'] * car_util_factor * car_weight_factor*RB_factor*DF_factor]
+        
+        h2car_d = h2car_demand.value
+        carH2_source.data['demand'] = [h2car_d]
+        carH2_source.data['intensity'] = [intensities['car hydrogen'] * car_util_factor * car_weight_factor*RB_factor*DF_factor]
+        
+        bar_source.data['car'] = [car_source.data['demand'][0]*car_source.data['intensity'][0] + carH2_source.data['demand'][0]*carH2_source.data['intensity'][0]]
+        bar2_source.data['car'] = [car_source.data['demand'][0] + carH2_source.data['demand'][0]]
+        
+        if(h2car_demand.value<1):
+            carH2_source.data['url']=['']
+        else:
+            carH2_source.data['url']=['app/static/hydrogen_car.png']
 
-    bus_source.data['demand'] = [bus_demand.value]
-    bus_source.data['intensity'] = [intensities['bus electric'] * 0.5 / (bus_util.value/100)*RB_factor*DF_factor]
+        
+    if 'bus' in changed:
 
-    van_d = evan_demand.value
-    van_source.data['demand'] = [van_d]
-    van_source.data['intensity'] = [intensities['van electric'] *RB_factor*DF_factor]
+        bus_source.data['demand'] = [bus_demand.value]
+        bus_source.data['intensity'] = [intensities['bus electric'] * 0.5 / (bus_util.value/100)*RB_factor*DF_factor]
+        bar_source.data['bus'] = [bus_source.data['demand'][0]*bus_source.data['intensity'][0]]
+        bar2_source.data['bus'] = [bus_source.data['demand'][0]]
+
+
+
+    if 'van' in changed:
+        van_d = evan_demand.value
+        van_source.data['demand'] = [van_d]
+        van_source.data['intensity'] = [intensities['van electric'] *RB_factor*DF_factor]
+        bar_source.data['van'] = [van_source.data['demand'][0]*van_source.data['intensity'][0]]
+        bar2_source.data['van'] = [van_source.data['demand'][0]]
+
+        
+
      
+    if 'air' in changed:
+
+        synair_d = syn_air_demand.value
+        plane_source.data['demand'] = [synair_d]
+        bar_source.data['air'] = [plane_source.data['demand'][0]*plane_source.data['intensity'][0]]
+        
+        bar2_source.data['air'] = [plane_source.data['demand'][0]]
+        
+        if(syn_air_demand.value<1):
+            plane_source.data['url']=['']
+        else:
+            plane_source.data['url']=['app/static/plane-synthetic.png']
+
+        
+        if plane_source.data['demand'][0] > 1e-8:
+            plot.x_range.end = 1.0
+            icon_car.glyph.w = image_widths['car']
+            icon_carH2.glyph.w = image_widths['car']   
+            icon_bike.glyph.w = image_widths['bike']
+            icon_walk.glyph.w = image_widths['walk']
+            icon_plane.glyph.w = image_widths['plane']
+            icon_train.glyph.w = image_widths['train']
+            icon_trainH2.glyph.w = image_widths['train']
+            icon_hgv.glyph.w = image_widths['hgv']
+            icon_hgvH2.glyph.w = image_widths['hgv']
+            icon_train_freight.glyph.w = image_widths['train_freight']
+            icon_bus.glyph.w = image_widths['bus']
+            icon_van.glyph.w = image_widths['van']
+            icon_motorcycle.glyph.w = image_widths['motorcycle']
+            
+            #shadow icons
+            icon_car0.glyph.w = image_widths['car']
+            icon_bike0.glyph.w = image_widths['bike']
+            icon_walk0.glyph.w = image_widths['walk']
+            icon_train0.glyph.w = image_widths['train']
+            icon_bus0.glyph.w = image_widths['bus']
+            icon_van0.glyph.w = image_widths['van']
+            icon_hgv0.glyph.w = image_widths['hgv']
+            icon_train_freight0.glyph.w = image_widths['train_freight']
+            icon_motorcycle0.glyph.w = image_widths['motorcycle']
+
+        else:
+            plot.x_range.end = 0.5
+            icon_car.glyph.w = image_widths['car']/2.
+            icon_carH2.glyph.w = image_widths['car']/2.     
+            icon_bike.glyph.w = image_widths['bike']/2.
+            icon_walk.glyph.w = image_widths['walk']/2.
+            icon_plane.glyph.w = image_widths['plane']/2.
+            icon_train.glyph.w = image_widths['train']/2.
+            icon_trainH2.glyph.w = image_widths['train']/2.
+            icon_hgv.glyph.w = image_widths['hgv']/2.
+            icon_hgvH2.glyph.w = image_widths['hgv']/2.
+            icon_train_freight.glyph.w = image_widths['train_freight']/2.
+            icon_bus.glyph.w = image_widths['bus']/2.
+            icon_van.glyph.w = image_widths['van']/2.
+            icon_motorcycle.glyph.w = image_widths['motorcycle']/2.
+            
+            #shadow icons
+            icon_car0.glyph.w = image_widths['car']/2.
+            icon_bike0.glyph.w = image_widths['bike']/2.
+            icon_walk0.glyph.w = image_widths['walk']/2.
+            icon_train0.glyph.w = image_widths['train']/2.
+            icon_bus0.glyph.w = image_widths['bus']/2.
+            icon_van0.glyph.w = image_widths['van']/2.
+            icon_hgv0.glyph.w = image_widths['hgv']/2.
+            icon_train_freight0.glyph.w = image_widths['train_freight']/2.
+            icon_motorcycle0.glyph.w = image_widths['motorcycle']/2.
+
+        
+    if 'train' in changed:
+    
+        etrain_d = etrain_demand.value
+        train_source.data['demand'] = [etrain_d]
+        train_source.data['intensity'] = [intensities['rail electric'] * 0.5 / (train_util.value/100)*RB_factor*DF_factor]
+        
+        trainH2_source.data['demand'] = [h2train_demand.value]
+        trainH2_source.data['intensity'] = [intensities['rail hydrogen'] * 0.5 / (train_util.value/100)*RB_factor*DF_factor]
+    
+        
+        train_freight_source.data['demand'] = [etrain_freight_demand.value]
+        train_freight_source.data['intensity'] = [intensities['rail freight electric'] * 0.5 / (train_freight_util.value)*RB_factor*DF_factor]
+        
+        bar_source.data['rail'] = [train_source.data['demand'][0]*train_source.data['intensity'][0]
+                                   +train_freight_source.data['demand'][0]*train_freight_source.data['intensity'][0]
+                                   +trainH2_source.data['demand'][0]*trainH2_source.data['intensity'][0]]
+        
+        bar2_source.data['rail'] = [train_source.data['demand'][0]            
+                                    + trainH2_source.data['demand'][0]]
+        
+        bar3_source.data['rail'] = [train_freight_source.data['demand'][0]]
+        
+        if(h2train_demand.value<1):
+            trainH2_source.data['url']=['']
+        else:
+            trainH2_source.data['url']=['app/static/train-hydrogen.png']
 
 
-    synair_d = syn_air_demand.value
-    plane_source.data['demand'] = [synair_d]
-    
-    etrain_d = etrain_demand.value
-    train_source.data['demand'] = [etrain_d]
-    train_source.data['intensity'] = [intensities['rail electric'] * 0.5 / (train_util.value/100)*RB_factor*DF_factor]
-    
-    
-    hgvE_source.data['demand'] = [eHGV_demand.value]
-    hgvE_source.data['intensity'] = [intensities['HGV electric'] * 0.5 / (HGV_util.value)*RB_factor*DF_factor]
-    
-    hgvH2_source.data['demand'] = [h2HGV_demand.value]
-    hgvH2_source.data['intensity'] = [intensities['HGV hydrogen'] * 0.5 / (HGV_util.value)*RB_factor*DF_factor]
-    
-    etrain_d = etrain_demand.value
-    train_source.data['demand'] = [etrain_d]
-    train_source.data['intensity'] = [intensities['rail electric'] * 0.5 / (train_util.value/100)*RB_factor*DF_factor]
-    
-    trainH2_source.data['demand'] = [h2train_demand.value]
-    trainH2_source.data['intensity'] = [intensities['rail hydrogen'] * 0.5 / (train_util.value/100)*RB_factor*DF_factor]
+        
+    if 'hgv' in changed:
+        hgvE_source.data['demand'] = [eHGV_demand.value]
+        hgvE_source.data['intensity'] = [intensities['HGV electric'] * 0.5 / (HGV_util.value)*RB_factor*DF_factor]
+        
+        hgvH2_source.data['demand'] = [h2HGV_demand.value]
+        hgvH2_source.data['intensity'] = [intensities['HGV hydrogen'] * 0.5 / (HGV_util.value)*RB_factor*DF_factor]
+        
+        bar_source.data['HGV'] = [hgvE_source.data['demand'][0]*hgvE_source.data['intensity'][0]
+                                  + hgvH2_source.data['demand'][0]*hgvH2_source.data['intensity'][0]]
+        bar3_source.data['HGV'] = [hgvE_source.data['demand'][0]+hgvH2_source.data['demand'][0]]
+        
+        if(h2HGV_demand.value<1):
+            hgvH2_source.data['url']=['']
+        else:
+            hgvH2_source.data['url']=['app/static/delivery-van-hydrogen.png']
 
     
-    train_freight_source.data['demand'] = [etrain_freight_demand.value]
-    train_freight_source.data['intensity'] = [intensities['rail freight electric'] * 0.5 / (train_freight_util.value)*RB_factor*DF_factor]
+    if 'walk/bike' in changed:
+    
+        walk_d = walk_demand.value
+        walk_source.data['demand'] = [walk_d]
+        
+        bike_d = bike_demand.value
+        bike_source.data['demand'] = [bike_d]
+        
+        bar2_source.data['walk'] = [walk_demand.value]
+        bar2_source.data['bicycle'] = [bike_demand.value]
+    
+    if 'motorcycle' in changed:
+        motorcycle_d = motorcycle_demand.value
+        motorcycle_source.data['demand'] = [motorcycle_d]
+        bar_source.data['motorcycle'] = [motorcycle_source.data['demand'][0]*motorcycle_source.data['intensity'][0]]
+        bar2_source.data['motorcycle'] = [motorcycle_source.data['demand'][0]]
 
-    
-    walk_d = walk_demand.value
-    walk_source.data['demand'] = [walk_d]
-    
-    bike_d = bike_demand.value
-    bike_source.data['demand'] = [bike_d]
-    
-    motorcycle_d = motorcycle_demand.value
-    motorcycle_source.data['demand'] = [motorcycle_d]
+
     
     Etot = (car_source.data['demand'][0]*car_source.data['intensity'][0]
             + carH2_source.data['demand'][0]*carH2_source.data['intensity'][0]
@@ -537,124 +655,47 @@ def update_data():
     # print(heights3[0])
 
 
-    bar_source.data['car'] = [car_source.data['demand'][0]*car_source.data['intensity'][0] + carH2_source.data['demand'][0]*carH2_source.data['intensity'][0]]
-    bar_source.data['van'] = [van_source.data['demand'][0]*van_source.data['intensity'][0]]
-    bar_source.data['bus'] = [bus_source.data['demand'][0]*bus_source.data['intensity'][0]]
-    bar_source.data['motorcycle'] = [motorcycle_source.data['demand'][0]*motorcycle_source.data['intensity'][0]]
-    bar_source.data['rail'] = [train_source.data['demand'][0]*train_source.data['intensity'][0]
-                               +train_freight_source.data['demand'][0]*train_freight_source.data['intensity'][0]
-                               +trainH2_source.data['demand'][0]*trainH2_source.data['intensity'][0]]
-    bar_source.data['air'] = [plane_source.data['demand'][0]*plane_source.data['intensity'][0]]
-    bar_source.data['HGV'] = [hgvE_source.data['demand'][0]*hgvE_source.data['intensity'][0]
-                              +hgvH2_source.data['demand'][0]*hgvH2_source.data['intensity'][0]]
-
-
-    
-    if plane_source.data['demand'][0] > 1e-8:
-        plot.x_range.end = 1.0
-        icon_car.glyph.w = image_widths['car']
-        icon_carH2.glyph.w = image_widths['car']   
-        icon_bike.glyph.w = image_widths['bike']
-        icon_walk.glyph.w = image_widths['walk']
-        icon_plane.glyph.w = image_widths['plane']
-        icon_train.glyph.w = image_widths['train']
-        icon_trainH2.glyph.w = image_widths['train']
-        icon_hgv.glyph.w = image_widths['hgv']
-        icon_hgvH2.glyph.w = image_widths['hgv']
-        icon_train_freight.glyph.w = image_widths['train_freight']
-        icon_bus.glyph.w = image_widths['bus']
-        icon_van.glyph.w = image_widths['van']
-        icon_motorcycle.glyph.w = image_widths['motorcycle']
-        
-        #shadow icons
-        icon_car0.glyph.w = image_widths['car']
-        icon_bike0.glyph.w = image_widths['bike']
-        icon_walk0.glyph.w = image_widths['walk']
-        icon_train0.glyph.w = image_widths['train']
-        icon_bus0.glyph.w = image_widths['bus']
-        icon_van0.glyph.w = image_widths['van']
-        icon_hgv0.glyph.w = image_widths['hgv']
-        icon_train_freight0.glyph.w = image_widths['train_freight']
-        icon_motorcycle0.glyph.w = image_widths['motorcycle']
-
-    else:
-        plot.x_range.end = 0.5
-        icon_car.glyph.w = image_widths['car']/2.
-        icon_carH2.glyph.w = image_widths['car']/2.     
-        icon_bike.glyph.w = image_widths['bike']/2.
-        icon_walk.glyph.w = image_widths['walk']/2.
-        icon_plane.glyph.w = image_widths['plane']/2.
-        icon_train.glyph.w = image_widths['train']/2.
-        icon_trainH2.glyph.w = image_widths['train']/2.
-        icon_hgv.glyph.w = image_widths['hgv']/2.
-        icon_hgvH2.glyph.w = image_widths['hgv']/2.
-        icon_train_freight.glyph.w = image_widths['train_freight']/2.
-        icon_bus.glyph.w = image_widths['bus']/2.
-        icon_van.glyph.w = image_widths['van']/2.
-        icon_motorcycle.glyph.w = image_widths['motorcycle']/2.
-        
-        #shadow icons
-        icon_car0.glyph.w = image_widths['car']/2.
-        icon_bike0.glyph.w = image_widths['bike']/2.
-        icon_walk0.glyph.w = image_widths['walk']/2.
-        icon_train0.glyph.w = image_widths['train']/2.
-        icon_bus0.glyph.w = image_widths['bus']/2.
-        icon_van0.glyph.w = image_widths['van']/2.
-        icon_hgv0.glyph.w = image_widths['hgv']/2.
-        icon_train_freight0.glyph.w = image_widths['train_freight']/2.
-        icon_motorcycle0.glyph.w = image_widths['motorcycle']/2.
-
-    barchart.y_range.end = max(Etot+20,300)
-    
-    bar2_source.data['walk'] = [walk_demand.value]
-    bar2_source.data['bicycle'] = [bike_demand.value]
-    bar2_source.data['car'] = [car_source.data['demand'][0] + carH2_source.data['demand'][0]]
-    bar2_source.data['van'] = [van_source.data['demand'][0]]
-    bar2_source.data['bus'] = [bus_source.data['demand'][0]]
-    bar2_source.data['motorcycle'] = [motorcycle_source.data['demand'][0]]
-    bar2_source.data['rail'] = [train_source.data['demand'][0]            
-                               +trainH2_source.data['demand'][0]]
-    bar2_source.data['air'] = [plane_source.data['demand'][0]]
-    
-    barchart2.y_range.end = max(Gpkmtot+100,1000)
-    
-    
-    bar3_source.data['rail'] = [train_freight_source.data['demand'][0]]
-    bar3_source.data['HGV'] = [hgvE_source.data['demand'][0]+hgvH2_source.data['demand'][0]]
+    barchart.y_range.end = max(Etot+20,300)   
+    barchart2.y_range.end = max(Gpkmtot+100,1000)    
     barchart3.y_range.end = max(Gtkmtot+40,222)
     
-    
-    # no icons if demand = 0
-    if(syn_air_demand.value<1):
-        plane_source.data['url']=['']
-    else:
-        plane_source.data['url']=['app/static/plane-synthetic.png']
-        
-    if(h2car_demand.value<1):
-        carH2_source.data['url']=['']
-    else:
-        carH2_source.data['url']=['app/static/hydrogen_car.png']
-        
-    if(h2HGV_demand.value<1):
-        hgvH2_source.data['url']=['']
-    else:
-        hgvH2_source.data['url']=['app/static/delivery-van-hydrogen.png']
-        
-    if(h2train_demand.value<1):
-        trainH2_source.data['url']=['']
-    else:
-        trainH2_source.data['url']=['app/static/train-hydrogen.png']
-
-        
+            
     
 
     #source.data = dict(x=x, y=y)
 
-for w in [ecar_demand,h2car_demand,evan_demand,bus_demand,bus_util,motorcycle_demand,syn_air_demand,etrain_demand,walk_demand,bike_demand,h2train_demand,car_util,train_util,h2HGV_demand,eHGV_demand,HGV_util,etrain_freight_demand,train_freight_util,car_weight,reg_break,drag_fric]:
-    w.on_change('value', lambda attr, old, new: update_data())
+# for w in [ecar_demand,h2car_demand,evan_demand,bus_demand,bus_util,motorcycle_demand,syn_air_demand,etrain_demand,walk_demand,bike_demand,h2train_demand,car_util,train_util,h2HGV_demand,eHGV_demand,HGV_util,etrain_freight_demand,train_freight_util,car_weight,reg_break,drag_fric]:
+#     w.on_change('value', lambda attr, old, new: update_data())
+
+for w in [ecar_demand,h2car_demand,car_util,car_weight]:
+    w.on_change('value', lambda attr, old, new: update_data(['car']))
+    
+for w in [evan_demand]:
+    w.on_change('value', lambda attr, old, new: update_data(['van']))
+    
+for w in [bus_demand,bus_util]:
+    w.on_change('value', lambda attr, old, new: update_data(['bus']))
+    
+for w in [motorcycle_demand]:
+    w.on_change('value', lambda attr, old, new: update_data(['motorcycle']))
+    
+for w in [syn_air_demand]:
+    w.on_change('value', lambda attr, old, new: update_data(['air']))
+
+for w in [etrain_demand,h2train_demand,train_util,etrain_freight_demand,train_freight_util]:
+    w.on_change('value', lambda attr, old, new: update_data(['train']))
+    
+for w in [walk_demand,bike_demand]:
+    w.on_change('value', lambda attr, old, new: update_data(['walk/bike']))
+    
+for w in [h2HGV_demand,eHGV_demand,HGV_util]:
+    w.on_change('value', lambda attr, old, new: update_data(['hgv']))
+    
+for w in [reg_break,drag_fric]:
+    w.on_change('value', lambda attr, old, new: update_data(['car','van','bus','train','hgv']))
 
 
-update_data()
+update_data(['car','van','bus','train','hgv','air','walk/bike','motorcycle'])
 
 #curdoc().add_root(column(row(plot,barchart),inputs) )
 curdoc().add_root(layout(children=[[plot,Spacer(width=50),barchart,barchart2,barchart3],[inputs],[div5]],sizing_mode='fixed'))
