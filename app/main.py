@@ -59,7 +59,7 @@ y = np.arange(0, 1000, 1)
 X, Y = np.meshgrid(x, y)
 Z = X*Y
 
-intensities = {'car electric':0.15,'car hydrogen':0.36,'van electric':0.267,'motorcycle':0.04,'bus electric':0.14,'rail electric':0.08,'rail hydrogen':0.192,'air synthetic':0.9,'air hydrogen':1.4,'bicycle':0.0,'walk':0.0,'HGV electric':0.161,'HGV hydrogen':0.4025,'rail freight electric':0.09}
+intensities = {'car electric':0.12,'car hydrogen':0.36,'van electric':0.267,'motorcycle':0.04,'bus electric':0.14,'rail electric':0.08,'rail hydrogen':0.192,'air synthetic':0.9,'air hydrogen':1.4,'bicycle':0.0,'walk':0.0,'HGV electric':0.161,'HGV hydrogen':0.4025,'rail freight electric':0.09}
 demands = {'car electric':539,'car hydrogen':0,'van electric':134,'motorcycle':5,'bus electric':29,'rail electric':81,'rail hydrogen':0,'walk':12,'bicycle':6,'air synthetic':0,'HGV electric':161,'HGV hydrogen':0,'rail freight electric':17}
 # N = 400
 # x = np.linspace(-1, 1, N)
