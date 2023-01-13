@@ -1,1 +1,5 @@
-numpymatplotlibbokehpalettable
+python=3.9.13
+numpy
+matplotlib=3.6.2
+bokeh=2.4.3
+palettable
