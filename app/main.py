@@ -141,7 +141,7 @@ van_source_fixed.data.update(van_source.data)
 # contour plot
 contour_source = get_contour_data(X,Y,Z,levels)
 plot = figure(plot_width=729,plot_height=450,x_range=[-0.04,0.5], y_range=[-20,700],
-              x_axis_label='energy intensity [kWh/pkm or kWh/tkm]',y_axis_label='demand [Gpkm or Gtkm]')
+              x_axis_label='Electric energy intensity [kWh/pkm or kWh/tkm]',y_axis_label='Demand [Gpkm or Gtkm]')
 plot.yaxis.axis_label_text_font_style = "normal"
 plot.xaxis.axis_label_text_font_style = "normal"
 plot.xaxis.axis_label_text_font_size = "12pt"
@@ -232,7 +232,7 @@ data = { 'names' : names,
 bar_source = ColumnDataSource(data=data)
 
 barchart = figure(x_range=(0,1), y_range=(0,300), plot_width=300,plot_height=450,
-            toolbar_location=None, tools="",y_axis_label='electricity demand [TWh]')
+            toolbar_location=None, tools="",y_axis_label='Electricity demand [TWh]')
 barchart.yaxis.axis_label_text_font_style = "normal"
 barchart.yaxis.axis_label_text_font_size = "12pt"
 
@@ -256,7 +256,7 @@ barchart.add_layout(barchart.legend[0], 'right')
 bar2_source = ColumnDataSource(data=data)
 
 barchart2 = figure(x_range=(0,1), y_range=(0,200), plot_width=150,plot_height=450,
-           toolbar_location=None, tools="",y_axis_label='passenger transport demand [Gpkm]')
+           toolbar_location=None, tools="",y_axis_label='Passenger transport demand [Gpkm]')
 barchart2.yaxis.axis_label_text_font_style = "normal"
 barchart2.yaxis.axis_label_text_font_size = "12pt"
 
@@ -300,7 +300,7 @@ barchart2.add_layout(label)
 bar3_source = ColumnDataSource(data=data)
 
 barchart3 = figure(x_range=(0,1), y_range=(0,200), plot_width=150,plot_height=450,
-            toolbar_location=None, tools="",y_axis_label='freight transport demand [Gtkm]')
+            toolbar_location=None, tools="",y_axis_label='Freight transport demand [Gtkm]')
 barchart3.yaxis.axis_label_text_font_style = "normal"
 barchart3.yaxis.axis_label_text_font_size = "12pt"
 
