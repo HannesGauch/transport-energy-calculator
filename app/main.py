@@ -28,7 +28,7 @@ def get_contour_data(X, Y, Z,levels):
     text = []
     isolevelid = 0
     for isolevel in cs.collections:
-        isocol = isolevel.get_color()[0]
+        isocol = isolevel.get_edgecolor()[0]
         thecol = 3 * [None]
         theiso = str(int(cs.get_array()[isolevelid]))+' TWh'
         isolevelid += 1
@@ -344,7 +344,7 @@ div1 = Div(
           <p><b>Set demand for private passenger transport [Gpkm]:</b></p>
           """,
     width=200,
-    height=10,
+    height=50,
     #style={'font-size':'110%'}
 )
 
@@ -353,7 +353,7 @@ div1_1 = Div(
           <p><b>Set demand for public passenger transport [Gpkm]:</b></p>
           """,
     width=200,
-    height=10,
+    height=50,
 )
 
 div2 = Div(
@@ -361,7 +361,7 @@ div2 = Div(
           <p><b>Set demand for freight transport [Gtkm]:</b></p>
           """,
     width=200,
-    height=10,
+    height=50,
 )
 
 div3 = Div(
@@ -369,7 +369,7 @@ div3 = Div(
           <p><b>Set average vehicle utilisation:</b></p>
           """,
     width=200,
-    height=10,
+    height=50,
 )
 
 div4 = Div(
@@ -377,7 +377,7 @@ div4 = Div(
           <p><b>Set efficiency improvements:</b></p>
           """,
     width=200,
-    height=10,
+    height=50,
 )
 
 div5 = Div(
